@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\chirpstack\api\csharp\Chirpstack.Api.csproj" />
+    <Reference Include="Chirpstack.Api">
+      <HintPath>..\ChirpstackAPI\Chirpstack.Api.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

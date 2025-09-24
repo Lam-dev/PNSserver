@@ -1,4 +1,5 @@
 ﻿using Chirpstack.Api;
+using LoraPNS.DeviceCommunication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,35 +8,38 @@ using System.Threading.Tasks;
 
 namespace LoraPNS
 {
-    internal class Light:LoraNode
+    internal class Light : LoraNode
     {
-       
-        float U, I, P, cosphi, totalEnergy;
-        byte dimPercentage, orderPlacer, notification;
+
+    
         Random rnd = new Random();
-        public Light(DeviceListItem deviceInfo, string applicationID, string token):base(deviceInfo, applicationID, token)
+        FindSaparateFrame __saparateFrame = new FindSaparateFrame();
+        public Light(DeviceListItem deviceInfo, string applicationID, string token) : base(deviceInfo, applicationID, token)
         {
-            
+
         }
 
         void __ParseReciptedFromDevice(byte[] reciptedData)
         {
-            
-            U = (float)(rnd.NextDouble() * (260 - 150) + 150);
-            I = (float)(rnd.NextDouble() * (4 - 0));
-            cosphi = (float)(rnd.NextDouble() * (1 - 0));
-            P = U * I * cosphi;
-            totalEnergy = 100;
+            __saparateFrame.ReciptedBytes(reciptedData);
+          
         }
 
         public void OrderOnOffRightNow(int dimPercentage)
         {
-            AddToDownlink(new byte[dimPercentage]);
+            var frame = new DeviceCommunicationFrameBase() { code = CommunicationCode.OnOffRightNow, data = new byte[] { (byte)dimPercentage } }.BuildFrame();
+            AddToDownlink(frame);
         }
 
         public void RequestReadTime()
         {
             AddToDownlink();
+        }
+
+        public void SetTimeForDevice(byte[] time)
+        {
+            var frame = new DeviceCommunicationFrameBase() { code = CommunicationCode.SetTime, data = time }.BuildFrame();
+            AddToDownlink(frame);
         }
 
     }

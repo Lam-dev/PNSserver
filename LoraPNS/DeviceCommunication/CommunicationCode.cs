@@ -10,9 +10,10 @@ namespace LoraPNS.DeviceCommunication
     {
         Status = 0,
         OnOffRightNow = 1,
-        ReadTime = 2,
-        ScheduleSet = 3,
-        NotificationSet = 4,
+        SetTime = 3,
+        ReadTime = 4,
+        ScheduleSet = 5,
+        NotificationSet = 6,
 
     }
 }
